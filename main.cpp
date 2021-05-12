@@ -1,35 +1,30 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <cmath>
+
+#include "utils.h"
 
 using namespace std;
 
-#define SUM_INFTY		10		// This is where the series are truncated
-#define MAX_POINTS		5000		// More points = more smooth = more processing (overleaf can't handle much)
+#define SUM_INFTY		171					// This is where the series are truncated (65 = magic number for long long unsigned int, 171 for long doubles)
+#define MAX_POINTS		1000				// More points = more smooth = more processing (overleaf can't handle much)
 
-constexpr double factorial(int n)
-{
-	return n <= 0.0 ? 1.0 : n * factorial(n - 1);
-}
-
-constexpr double permutation(int n, int p)
-{
-	return factorial(n) / factorial(p);
-}
-
-constexpr double combination(int n, int p)
-{	
-	return permutation(n, p) / factorial(p);
-}
-
-constexpr double deformed_factorial(float x, double (*pF) (float))
-{
-	return x <= 0.0 ? 1.0 : x * pF(x) * deformed_factorial(x - 1, pF);
-}
-
-inline double f(float x)
+inline long double f(float x)
 {
 	return 1 / sqrt(x);
+}
+
+inline long double deformed_exp(float x)
+{
+	long double value = 0.0;
+
+	for( auto n = 0; n <= SUM_INFTY; n++ )
+	{
+		value += pow(x, n) / deformed_factorial(n, &f);
+	}
+
+	return value;
 }
 
 void plot_fidelity()
@@ -44,26 +39,28 @@ void plot_fidelity()
 		return;
 	}
 
-	float normalization_constant = 0.0;
-
-	const float interval = 2.0 / MAX_POINTS;
-	for( auto t = 0.0; t <= 2.0; t += interval )
+	const double interval = 1.0 / MAX_POINTS;
+	for( auto t = 0.0; t <= 1.0; t += interval )
 	{
-		float sum = 0.0;
+		long double sum = 0.0;
 
-		for( auto k = 0; k <= SUM_INFTY; k++ )
+		for( auto k = 0; k <= SUM_INFTY; k += 2 )
 		{
-			float sum1 = 0.0;
+			long double sum1 = 0.0;
 
-			for( auto n = k; n <= SUM_INFTY; n++ )
+			for( auto n = k; n <= SUM_INFTY; n += 2 )
 			{
-				sum1 += sqrt(combination(n, k)) * exp(((k - n) / 2) * t) * pow(1 - exp(-t), k / 2) * (((1 + pow(-1, n)) * pow(alpha, n)) / sqrt(deformed_factorial(n, &f))) * (((1 + pow(-1, n - k)) * pow(alpha, n - k)) / sqrt(deformed_factorial(n - k, &f)));
+				sum1 += 4 * sqrt(combination(n, k)) * exp(((k - n) / 2) * t) * pow(1 - exp(-t), k / 2) * (pow(alpha, n) / sqrt(deformed_factorial(n, &f))) * (pow(alpha, n - k) / sqrt(deformed_factorial(n - k, &f)));
 			}
 
 			sum += pow(sum1, 2);
 		}
 
-		if( t == 0.0 )
+		long double exp1 = deformed_exp(pow(alpha, 2));
+		long double exp2 = deformed_exp(-pow(alpha, 2));
+		long double normalization_constant = 1 / pow(2 * (exp1 + exp2), 2);
+
+/*		if( t == 0.0 )
 		{
 			normalization_constant = sum;
 			sum = 1.0;
@@ -72,8 +69,9 @@ void plot_fidelity()
 		{
 			sum /= normalization_constant;
 		}
-
-		dataFile << t << '\t' << sum << '\n';
+*/
+		sum *= normalization_constant;
+		dataFile << t << ' ' << sum << '\n';
 	}
 
 	dataFile.close();
@@ -84,6 +82,6 @@ void plot_fidelity()
 int main()
 {
 	plot_fidelity();
-    system("pause");
-    return 0;
+	system("pause");
+	return 0;
 }
