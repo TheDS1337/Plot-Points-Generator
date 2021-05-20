@@ -12,22 +12,40 @@ constexpr long double factorial(int n)
 	return n <= 0 ? 1 : n * factorial(n - 1);
 }
 
-constexpr long double permutation(int n, int p)
+constexpr long double permutation(int n, int p, bool inversed = false)
 {
-	return factorial(n) / factorial(p);
+	return inversed ? factorial(p) / factorial(n) : factorial(n) / factorial(p);
 }
 
-constexpr long double combination(int n, int p)
+constexpr long double combination(int n, int p, bool inversed = false)
 {
-	return permutation(n, p) / factorial(p);
+	return inversed ? factorial(p) / permutation(n, p) : permutation(n, p) / factorial(p);
 }
 
-constexpr long double deformed_factorial(int n, long double (*pF) (float))
+constexpr long double deformed_factorial(int n, long double (*pF) (int, float), float q)
 {
-	return n <= 0.0 ? 1.0 : n * pF((float) n) * deformed_factorial(n - 1, pF);
+	return n <= 0 ? 1 : n * pow(pF(n, q), 2) * deformed_factorial(n - 1, pF, q);
 }
 
 bool IsEvenNumber(int n)
 {
-	return n & 1 ? true : false;
+	return n & 1;
+}
+
+// From Quake 3
+double Q_rsqrt(double number)
+{
+	long long i;
+	double x2, y;
+	const float threehalfs = 1.5;
+
+	x2 = number * 0.5;
+	y = number;
+	i = *(long long*) &y;                       // evil floating point bit level hacking
+	i = 0x5fe6eb50c7b537a9 - (i >> 1);               // what the fuck? 
+	y = *(double*) &i;
+	y = y * (threehalfs - (x2 * y * y));   // 1st iteration
+//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+	return y;
 }
