@@ -22,7 +22,7 @@ constexpr long double combination(int n, int p, bool inversed = false)
 	return inversed ? factorial(p) / permutation(n, p) : permutation(n, p) / factorial(p);
 }
 
-constexpr long double deformed_factorial(int n, long double (*pF) (int, float), float q)
+constexpr long double deformed_factorial(int n, long double (*pF) (int, long double), long double q)
 {
 	return n <= 0 ? 1 : n * pow(pF(n, q), 2) * deformed_factorial(n - 1, pF, q);
 }
@@ -30,22 +30,4 @@ constexpr long double deformed_factorial(int n, long double (*pF) (int, float), 
 bool IsEvenNumber(int n)
 {
 	return n & 1;
-}
-
-// From Quake 3
-double Q_rsqrt(double number)
-{
-	long long i;
-	double x2, y;
-	const float threehalfs = 1.5;
-
-	x2 = number * 0.5;
-	y = number;
-	i = *(long long*) &y;                       // evil floating point bit level hacking
-	i = 0x5fe6eb50c7b537a9 - (i >> 1);               // what the fuck? 
-	y = *(double*) &i;
-	y = y * (threehalfs - (x2 * y * y));   // 1st iteration
-//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-	return y;
 }

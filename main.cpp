@@ -8,11 +8,11 @@
 using namespace std;
 
 #define SUM_INFTY		2000				// This is where the fractional series are truncated (65 = magic number for long long unsigned int, 171 for long doubles)
-#define MAX_POINTS		100					// More points = more smooth = more processing (overleaf can't handle much)
+#define MAX_POINTS		50					// More points = more smooth = more processing (overleaf can't handle much)
 
 #define Q_DEFORMER		1.0					// q = 1 is the undeformed limit, q = 0 is the harmonious limit and anything 0 < q < 1 is a case for study.
 
-inline long double f(int x, float q)
+inline long double f(int x, long double q)
 {
 	return sqrt((1 - pow(q, x)) / ((1 - q) * x));
 }
@@ -22,7 +22,7 @@ inline long double f(int x)
 	return f(x, Q_DEFORMER);
 }
 
-inline long double deformed_exp(float x, float q)
+inline long double deformed_exp(long double x, long double q)
 {
 	long double value = 0.0;
 
@@ -34,27 +34,25 @@ inline long double deformed_exp(float x, float q)
 	return exp(value);
 }
 
-inline long double deformed_exp(float x)
+inline long double deformed_exp(long double x)
 {
 	return deformed_exp(x, Q_DEFORMER);
 }
 
-void plot_variances(float alpha)
+void plot_variances(long double alpha)
 {
 	fstream dataFile;
-	dataFile.open("variances.dat", ios::out);
+	dataFile.open("q_variances.dat", ios::out);
 
 	if( !dataFile )
 	{
 		return;
 	}
 
-	float alpha_squared = pow(alpha, 2);
+	long double alpha_squared = pow(alpha, 2);
+	long double interval = 1.0 / MAX_POINTS;
 
-	float interval = 1.0 / MAX_POINTS;
-	float end_point = 1.0 - interval;
-
-	for( auto q = interval; q <= end_point; q += interval )
+	for( auto q = interval; q < 1.0; q += interval )
 	{
 		long double x = 0.0, y = 0.0, x_squared = 0.0, y_squared = 0.0;
 		long double inv_def_exp_sum = 0.0;
@@ -91,12 +89,74 @@ void plot_variances(float alpha)
 
 	dataFile.close();
 
-	cout << "Quadratic variances... OKAY!" << endl;
+	cout << "Quadratic variances (q as a variable)... OKAY!" << endl;
 }
+
+void plot_variances2(long double q)
+{
+	fstream dataFile;
+	dataFile.open("alpha_variances.dat", ios::out);
+
+	if( !dataFile )
+	{
+		return;
+	}
+
+	long double domain = 1 / (1 - q + LDBL_EPSILON);
+
+	if( domain > 1 )
+	{
+		domain = 1.0;
+	}
+
+	long double interval = domain / MAX_POINTS;
+
+	for( auto alpha = interval; alpha < domain; alpha += interval )
+	{
+		long double alpha_squared = pow(alpha, 2);
+
+		long double x = 0.0, y = 0.0, x_squared = 0.0, y_squared = 0.0;
+		long double inv_def_exp_sum = 0.0;
+
+		for( auto k = 1; k <= SUM_INFTY; k++ )
+		{
+			inv_def_exp_sum += pow((1 - q) * alpha_squared, k) / (k * (1 - pow(q, k)));
+		}
+
+		long double inv_def_exp = 1 / sqrt(exp(inv_def_exp_sum));
+
+		for( auto n = 0; n <= SUM_INFTY; n++ )
+		{
+			long double def_factorial = deformed_factorial(n, &f, q);
+			long double fn1 = f(n + 1, q), fn2 = f(n + 2, q);
+			long double sum1 = alpha_squared / fn1, sum2 = alpha_squared / fn2;
+			long double prod = pow(alpha_squared, n) / (fn1 * def_factorial);
+
+			x += sqrt(2) * alpha * prod;
+			x_squared += prod * (sum1 + sum2);
+			y_squared += prod * (sum1 - sum2);
+		}
+
+		x *= inv_def_exp;
+		x_squared *= inv_def_exp;		x_squared += 0.5;
+		y_squared *= inv_def_exp;		y_squared += 0.5;
+
+		long double x_variance = sqrt(x_squared - pow(x, 2));
+		long double y_variance = sqrt(y_squared - pow(y, 2));
+		long double xy_prod = x_variance * y_variance;
+
+		dataFile << alpha << ' ' << xy_prod << '\n';
+	}
+
+	dataFile.close();
+
+	cout << "Quadratic variances (alpha as a variable)... OKAY!" << endl;
+}
+
 /*
 void plot_fidelity()
 {
-	float alpha = 0.5;
+	long double alpha = 0.5;
 
 	fstream dataFile;
 	dataFile.open("fidelity.dat", ios::out);
@@ -149,7 +209,8 @@ void plot_fidelity()
 
 int main()
 {
-	plot_variances(0.5);
+//	plot_variances(0.5);
+	plot_variances2(0.01);
 //	plot_fidelity();
 	system("pause");
 	return 0;
