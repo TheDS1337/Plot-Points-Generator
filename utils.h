@@ -24,7 +24,26 @@ constexpr long double combination(int n, int p, bool inversed = false)
 
 constexpr long double deformed_factorial(int n, long double (*pF) (int, long double), long double q)
 {
-	return n <= 0 ? 1 : n * pow(pF(n, q), 2) * deformed_factorial(n - 1, pF, q);
+	long double f = pF(n, q), p = 1.0;
+
+	if( f != 0.0 )
+	{
+		p = pow(pF(n, q), 2);
+	}
+
+	return n <= 0 ? 1 : n * p * deformed_factorial(n - 1, pF, q);
+}
+
+constexpr long double f_factorial(int n, long double (*pF) (int, long double), long double q)
+{
+	long double f = pF(n, q), p = 1.0;
+
+	if( f != 0.0 )
+	{
+		p = pow(pF(n, q), 2);
+	}
+
+	return n <= 0 ? 1 : p * f_factorial(n - 1, pF, q);
 }
 
 bool IsEvenNumber(int n)
