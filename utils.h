@@ -2,45 +2,45 @@
 
 #define M_PI           3.1415926535897932384
 
-constexpr long double factorial(int n)
+constexpr long double factorial(int n, long double (*pF) (int, long double) = nullptr, long double q = 1.0)
 {
-	if( n > 65 )
+	long double p = 1.0;
+
+	if( pF && n > 0 )
 	{
-		return exp(n * log(n) - n + (log(n) / 2) - log(2 * M_PI));
+		long double f = pF(n, q);
+
+		if( f != 0.0 && f != 1.0 )
+		{
+			p = pow(f, 2);
+		}
 	}
 
-	return n <= 0 ? 1 : n * factorial(n - 1);
+	return n <= 0 ? 1 : n * p * factorial(n - 1, pF, q);
 }
 
-constexpr long double permutation(int n, int p, bool inversed = false)
+constexpr long double permutation(int n, int p, long double (*pF) (int, long double) = nullptr, long double q = 1.0, bool inversed = false)
 {
-	return inversed ? factorial(p) / factorial(n) : factorial(n) / factorial(p);
+	return inversed ? factorial(p, pF, q) / factorial(n, pF, q) : factorial(n, pF, q) / factorial(p, pF, q);
 }
 
-constexpr long double combination(int n, int p, bool inversed = false)
+constexpr long double combination(int n, int p, long double (*pF) (int, long double) = nullptr, long double q = 1.0, bool inversed = false)
 {
-	return inversed ? factorial(p) / permutation(n, p) : permutation(n, p) / factorial(p);
-}
-
-constexpr long double deformed_factorial(int n, long double (*pF) (int, long double), long double q)
-{
-	long double f = pF(n, q), p = 1.0;
-
-	if( f != 0.0 )
-	{
-		p = pow(pF(n, q), 2);
-	}
-
-	return n <= 0 ? 1 : n * p * deformed_factorial(n - 1, pF, q);
+	return inversed ? factorial(p, pF, q) / permutation(n, p, pF, q) : permutation(n, p, pF, q) / factorial(p, pF, q);
 }
 
 constexpr long double f_factorial(int n, long double (*pF) (int, long double), long double q)
 {
-	long double f = pF(n, q), p = 1.0;
+	long double p = 1.0;
 
-	if( f != 0.0 )
+	if( n > 0 )
 	{
-		p = pow(pF(n, q), 2);
+		long double f = pF(n, q);
+
+		if( f != 0.0 && f != 1.0 )
+		{
+			p = pow(f, 2);
+		}
 	}
 
 	return n <= 0 ? 1 : p * f_factorial(n - 1, pF, q);
@@ -48,5 +48,5 @@ constexpr long double f_factorial(int n, long double (*pF) (int, long double), l
 
 bool IsEvenNumber(int n)
 {
-	return n & 1;
+	return n % 2 == 0;
 }
