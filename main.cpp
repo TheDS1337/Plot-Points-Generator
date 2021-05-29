@@ -10,16 +10,14 @@ using namespace std;
 #define SUM_INFTY		50				// This is where the fractional series are truncated (65 = magic number for long long unsigned int, 171 for long doubles)
 #define MAX_POINTS		50					// More points = more smooth = more processing (overleaf can't handle much)
 
-#define Q_DEFORMER		1.0					// q = 1 is the undeformed limit, q = 0 is the harmonious limit and anything 0 < q < 1 is a case for study.
+#define INTERVAL_Q		1.0
+#define INTERVAL_ALPHA	5.0
+#define INTERVAL_T		1.0
+#define INTERVAL_N		50
 
 inline long double f(int x, long double q)
 {
 	return sqrt((1 - pow(q, x)) / ((1 - q) * x));
-}
-
-inline long double f(int x)
-{						
-	return f(x, Q_DEFORMER);
 }
 
 inline long double deformed_exp(long double x, long double q, long double exponent = 1.0)
@@ -28,31 +26,28 @@ inline long double deformed_exp(long double x, long double q, long double expone
 
 	for( auto n = 1; n <= SUM_INFTY; n++ )
 	{
-		value += pow((1 - q) * x, n) / ((1 - pow(q, x)) * x);
+		value += pow((1 - q) * x, n) / ((1 - pow(q, n)) * n);
 	}
 
 	return exp(exponent * value);
 }
 
-inline long double deformed_exp(long double x)
-{
-	return deformed_exp(x, Q_DEFORMER);
-}
-
-void plot_variances(long double alpha)
+void plot_variances_q(long double alpha)
 {
 	fstream dataFile;
-	dataFile.open("q_variances.dat", ios::out);
+	dataFile.open("variances_q.dat", ios::out);
 
 	if( !dataFile )
 	{
 		return;
 	}
 
-	long double alpha_squared = pow(alpha, 2);
-	long double interval = 1.0 / MAX_POINTS;
+	dataFile << "## alpha = " << alpha << '\n';
 
-	for( auto q = interval; q < 1.0; q += interval )
+	long double alpha_squared = pow(alpha, 2);
+	long double interval = INTERVAL_Q / MAX_POINTS;
+
+	for( auto q = interval; q < INTERVAL_Q; q += interval )
 	{
 		long double x = 0.0, y = 0.0, x_squared = 0.0, y_squared = 0.0;
 
@@ -86,21 +81,23 @@ void plot_variances(long double alpha)
 	cout << "Quadratic variances (q as a variable)... OKAY!" << endl;
 }
 
-void plot_variances2(long double q)
+void plot_variances_alpha(long double q)
 {
 	fstream dataFile;
-	dataFile.open("alpha_variances.dat", ios::out);
+	dataFile.open("variances_alpha.dat", ios::out);
 
 	if( !dataFile )
 	{
 		return;
 	}
 
+	dataFile << "## q = " << q << '\n';
+
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
 
-	if( domain > 1 )
+	if( domain > INTERVAL_ALPHA )
 	{
-		domain = 1.0;
+		domain = INTERVAL_ALPHA;
 	}
 
 	long double interval = domain / MAX_POINTS;
@@ -140,7 +137,7 @@ void plot_variances2(long double q)
 	cout << "Quadratic variances (alpha as a variable)... OKAY!" << endl;
 }
 
-void plot_photon_statistics(long double q, long double alpha, long double t, bool even = true)
+void plot_photon_statistics_n(long double q, long double alpha, long double t, bool even = true)
 {
 	fstream dataFile;
 	dataFile.open("photon_statistics_n.dat", ios::out);
@@ -148,6 +145,15 @@ void plot_photon_statistics(long double q, long double alpha, long double t, boo
 	if( !dataFile )
 	{
 		return;
+	}
+
+	if( even )
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", t = " << t << ", even\n";
+	}
+	else
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", t = " << t << ", odd\n";
 	}
 
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
@@ -161,7 +167,7 @@ void plot_photon_statistics(long double q, long double alpha, long double t, boo
 	int sign = even ? 1 : -1;
 	long double alpha_squared = pow(alpha, 2);
 
-	for( auto n = 0; n <= MAX_POINTS; n++ )
+	for( auto n = 0; n <= INTERVAL_N; n++ )
 	{
 		long double p = 0.0, c = 0.0;
 		long double normalization = (1 / (2 * (deformed_exp(alpha_squared, q, 1.0) + sign * deformed_exp(-alpha_squared, q, 1.0)))) * (exp(-n * t) / factorial(n));
@@ -184,7 +190,7 @@ void plot_photon_statistics(long double q, long double alpha, long double t, boo
 	cout << "Photon statistics (n as a variable)... OKAY!" << endl;
 }
 
-void plot_photon_statistics2(long double q, long double alpha, int n, bool even = true)
+void plot_photon_statistics_t(long double q, long double alpha, int n, bool even = true)
 {
 	fstream dataFile;
 	dataFile.open("photon_statistics_t.dat", ios::out);
@@ -192,6 +198,15 @@ void plot_photon_statistics2(long double q, long double alpha, int n, bool even 
 	if( !dataFile )
 	{
 		return;
+	}
+
+	if( even )
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", n = " << n << ", even\n";
+	}
+	else
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", n = " << n << ", odd\n";
 	}
 
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
@@ -204,9 +219,9 @@ void plot_photon_statistics2(long double q, long double alpha, int n, bool even 
 
 	int sign = even ? 1 : -1;
 	long double alpha_squared = pow(alpha, 2);
-	long double interval = 1.0 / MAX_POINTS;
+	long double interval = INTERVAL_T / MAX_POINTS;
 
-	for( auto t = interval; t < 1.0; t += interval )
+	for( auto t = interval; t < INTERVAL_T; t += interval )
 	{
 		long double p = 0.0, c = 0.0;
 		long double normalization = (1 / (2 * (deformed_exp(alpha_squared, q, 1.0) + sign * deformed_exp(-alpha_squared, q, 1.0)))) * (exp(-n * t) / factorial(n));
@@ -229,7 +244,7 @@ void plot_photon_statistics2(long double q, long double alpha, int n, bool even 
 	cout << "Photon statistics (t as a variable)... OKAY!" << endl;
 }
 
-void plot_quantum_visibility(long double q, long double alpha, long double t)
+void plot_quantum_visibility_n(long double q, long double alpha, long double t)
 {
 	fstream dataFile;
 	dataFile.open("quantum_visibility_n.dat", ios::out);
@@ -238,6 +253,8 @@ void plot_quantum_visibility(long double q, long double alpha, long double t)
 	{
 		return;
 	}
+
+	dataFile << "## q = " << q << ", alpha = " << alpha << ", t = " << t << '\n';
 
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
 
@@ -249,7 +266,7 @@ void plot_quantum_visibility(long double q, long double alpha, long double t)
 
 	long double alpha_squared = pow(alpha, 2);
 
-	for( auto n = 0; n <= MAX_POINTS; n++ )
+	for( auto n = 0; n <= INTERVAL_N; n++ )
 	{
 		long double p = 0.0, c = 0.0;
 
@@ -272,7 +289,7 @@ void plot_quantum_visibility(long double q, long double alpha, long double t)
 	cout << "Quantum visibility (n as a variable)... OKAY!" << endl;
 }
 
-void plot_quantum_visibility2(long double q, long double alpha, int n)
+void plot_quantum_visibility_t(long double q, long double alpha, int n)
 {
 	fstream dataFile;
 	dataFile.open("quantum_visibility_t.dat", ios::out);
@@ -281,6 +298,8 @@ void plot_quantum_visibility2(long double q, long double alpha, int n)
 	{
 		return;
 	}
+
+	dataFile << "## q = " << q << ", alpha = " << alpha << ", n = " << n << '\n';
 
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
 
@@ -291,9 +310,9 @@ void plot_quantum_visibility2(long double q, long double alpha, int n)
 	}
 
 	long double alpha_squared = pow(alpha, 2);
-	long double interval = 1.0 / MAX_POINTS;
+	long double interval = INTERVAL_T / MAX_POINTS;
 
-	for( auto t = interval; t < 1.0; t += interval )
+	for( auto t = interval; t < INTERVAL_T; t += interval )
 	{
 		long double p = 0.0, c = 0.0;
 
@@ -316,7 +335,7 @@ void plot_quantum_visibility2(long double q, long double alpha, int n)
 	cout << "Quantum visibility (t as a variable)... OKAY!" << endl;
 }
 
-void plot_fidelity(long double q, long double alpha, bool even = true)
+void plot_fidelity_t(long double q, long double alpha, bool even = true)
 {
 	fstream dataFile;
 	dataFile.open("fidelity_t.dat", ios::out);
@@ -326,6 +345,16 @@ void plot_fidelity(long double q, long double alpha, bool even = true)
 		return;
 	}
 
+	if( even )
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", even\n";
+	}
+	else
+	{
+		dataFile << "## q = " << q << ", alpha = " << alpha << ", odd\n";
+	}
+
+	int sign = even ? 1 : -1;
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
 
 	if( alpha >= domain )
@@ -334,12 +363,11 @@ void plot_fidelity(long double q, long double alpha, bool even = true)
 		return;
 	}
 
-	int sign = even ? 1 : -1;
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = pow(2 * (deformed_exp(alpha_squared, q, 1.0) + sign * deformed_exp(-alpha_squared, q, 1.0)), -2);
-	long double interval = 1.0 / MAX_POINTS;
+	long double interval = INTERVAL_T / MAX_POINTS;
 
-	for( auto t = interval; t < 1.0; t += interval )
+	for( auto t = interval; t < INTERVAL_T; t += interval )
 	{
 		long double sum = 0.0;
 
@@ -360,7 +388,7 @@ void plot_fidelity(long double q, long double alpha, bool even = true)
 
 			sum += pow(sum2, 2);
 		}
-
+		
 		sum *= normalization;
 
 		dataFile << t << ' ' << sum << '\n';
@@ -371,7 +399,7 @@ void plot_fidelity(long double q, long double alpha, bool even = true)
 	cout << "Fidelity (t as a variable)... OKAY!" << endl;
 }
 
-void plot_fidelity2(long double q, long double t, bool even = true)
+void plot_fidelity_alpha(long double q, long double t, bool even = true)
 {
 	fstream dataFile;
 	dataFile.open("fidelity_alpha.dat", ios::out);
@@ -381,12 +409,21 @@ void plot_fidelity2(long double q, long double t, bool even = true)
 		return;
 	}
 
+	if( even )
+	{
+		dataFile << "## q = " << q << ", t = " << t << ", even\n";
+	}
+	else
+	{
+		dataFile << "## q = " << q << ", t = " << t << ", odd\n";
+	}
+
 	int sign = even ? 1 : -1;	
 	long double domain = 1 / (1 - q + LDBL_EPSILON);
 
-	if( domain > 5.0 )
+	if( domain > INTERVAL_ALPHA )
 	{
-		domain = 5.0;
+		domain = INTERVAL_ALPHA;
 	}
 
 	long double interval = domain / MAX_POINTS;
@@ -426,54 +463,6 @@ void plot_fidelity2(long double q, long double t, bool even = true)
 	cout << "Fidelity (alpha as a variable)... OKAY!" << endl;
 }
 
-void plot_fidelity3(long double t, bool even = true)
-{
-	fstream dataFile;
-	dataFile.open("fidelity_alpha2.dat", ios::out);
-
-	if( !dataFile )
-	{
-		return;
-	}
-
-	int sign = even ? 1 : -1;
-	long double interval = 5.0 / MAX_POINTS;
-
-	for( auto alpha = interval; alpha < 5.0; alpha += interval )
-	{
-		long double alpha_squared = pow(alpha, 2);
-		long double normalization = pow(2 * (exp(alpha_squared) + sign * exp(-alpha_squared)), -2);
-
-		long double sum = 0.0;
-
-		for( auto k = 0; k <= SUM_INFTY; k++ )
-		{
-			int sign2 = IsEvenNumber(k) ? 1 : -1;
-			long double sum2 = 0.0;
-			long double d = pow(alpha, k) * sqrt(pow(1 - exp(-t) + LDBL_EPSILON, k) / factorial(k));
-
-			for( auto n = 0; n <= SUM_INFTY; n++ )
-			{
-				int sign3 = IsEvenNumber(n) ? 1 : -1;
-				int g = 1 + sign * sign3 * (1 + sign2) + sign2;
-				long double e = pow(alpha_squared, n) * exp(-n * t / 2) / factorial(n);
-
-				sum2 += d * e * g;
-			}
-
-			sum += pow(sum2, 2);
-		}
-
-		sum *= normalization;
-
-		dataFile << alpha << ' ' << sum << '\n';
-	}
-
-	dataFile.close();
-
-	cout << "Fidelity (alpha as a variable)... OKAY!" << endl;
-}
-
 int main()
 {
 //	plot_variances(0.5);
@@ -482,9 +471,8 @@ int main()
 //	plot_photon_statistics2(0.5, 1.0, 0);
 //	plot_quantum_visibility(0.5, 1.0, 1.0); 
 //	plot_quantum_visibility2(0.5, 1.0, 0);
-//	plot_fidelity(0.9999, 3.0);
-	plot_fidelity2(0.9999999999999, 0.0);
-	plot_fidelity3(0.0);	
+//	plot_fidelity_t(0.00001, 0.9, false);
+//	plot_fidelity_alpha(0.9999, 1.0, false);
 
 	system("pause");
 	return 0;
