@@ -21,7 +21,7 @@ constexpr long double factorial(int n, long double (*pF) (int, long double) = nu
 
 constexpr long double permutation(int n, int p, long double (*pF) (int, long double) = nullptr, long double q = 1.0, bool inversed = false)
 {
-	return inversed ? factorial(p, pF, q) / factorial(n, pF, q) : factorial(n, pF, q) / factorial(p, pF, q);
+	return inversed ? factorial(n - p, pF, q) / factorial(n, pF, q) : factorial(n, pF, q) / factorial(n - p, pF, q);
 }
 
 constexpr long double combination(int n, int p, long double (*pF) (int, long double) = nullptr, long double q = 1.0, bool inversed = false)
@@ -49,4 +49,39 @@ constexpr long double f_factorial(int n, long double (*pF) (int, long double), l
 bool IsEvenNumber(int n)
 {
 	return n % 2 == 0;
+}
+
+long double laguerre(int n, int m, long double x)
+{
+	long double value = 0.0;
+
+	for( auto k = 0; k <= n; k++ )
+	{
+		int sign = IsEvenNumber(k) ? 1 : -1;
+		value += sign * combination(n + m, n - k) * pow(x, k) / factorial(k);
+	}
+
+	return value;
+}
+
+inline std::tm localtime_xp(std::time_t timer)
+{
+	std::tm bt{};
+#if defined(__unix__)
+	localtime_r(&timer, &bt);
+#elif defined(_MSC_VER)
+	localtime_s(&bt, &timer);
+#else
+	static std::mutex mtx;
+	std::lock_guard<std::mutex> lock(mtx);
+	bt = *std::localtime(&timer);
+#endif
+	return bt;
+}
+
+// default = "YYYY-MM-DD HH:MM:SS"
+inline std::string time_stamp(std::tm bt, const std::string& fmt = "%F %T")
+{
+	char buf[64];
+	return { buf, std::strftime(buf, sizeof(buf), fmt.c_str(), &bt) };
 }
