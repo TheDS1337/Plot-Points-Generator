@@ -23,5 +23,29 @@
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wigner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fidelity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="visibility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="squeezing_factors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="second_order_correlation_parameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mandel_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="photon_statistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deformations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
