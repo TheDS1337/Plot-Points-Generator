@@ -2,11 +2,9 @@
 
 #include "utils.h"
 
-void wigner2(std::string filename, long double (*pF) (int, long double), long double q, long double alpha)
+void wigner(std::string filename, long double (*pF) (int, long double), long double q, long double alpha)
 {
-	long double domain = 1 / sqrt(abs(q - 1));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -24,18 +22,18 @@ void wigner2(std::string filename, long double (*pF) (int, long double), long do
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = 2 * normalization_factor(pF, q, alpha_squared) / M_PI;
-	long double domainXY = 10.0;
+	long double domainXY = 6.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
-	for( long double x = LDBL_EPSILON - domainXY; x < domainXY; x += intervalX )
+	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-0.2 * pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
 		
-		for( long double y = LDBL_EPSILON - domainXY; y < domainXY; y += intervalY )
+		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-0.2 * pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
 
 			long double beta_squared = pow(x + LDBL_EPSILON, 2) + pow(y + LDBL_EPSILON, 2);
 			long double beta = sqrt(beta_squared), phi = atan2(y, x);
@@ -94,9 +92,7 @@ void wigner2(std::string filename, long double (*pF) (int, long double), long do
 
 void wigner_superposition(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double theta = 0.0)
 {
-	long double domain = 1 / sqrt(abs(q - 1));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -114,18 +110,18 @@ void wigner_superposition(std::string filename, long double (*pF) (int, long dou
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta) / M_PI;
-	long double domainXY = 10.0;
+	long double domainXY = 6.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
-	for( long double x = LDBL_EPSILON - domainXY; x < domainXY; x += intervalX )
+	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-0.2 * pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
 
-		for( long double y = LDBL_EPSILON - domainXY; y < domainXY; y += intervalY )
+		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-0.2 * pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
 
 			long double beta_squared = pow(x + LDBL_EPSILON, 2) + pow(y + LDBL_EPSILON, 2);
 			long double beta = sqrt(beta_squared), phi = atan2(y, x);

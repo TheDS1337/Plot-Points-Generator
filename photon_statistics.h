@@ -4,9 +4,7 @@
 
 void photon_statistics_superposition_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t, long double theta = 0.0)
 {
-	long double domain = 1 / sqrt(abs(1 - q));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -23,15 +21,7 @@ void photon_statistics_superposition_n(std::string filename, long double (*pF) (
 	dataFile << "## q = " << q << ", alpha = " << alpha << ", t = " << t << ", theta = " << theta << '\n';
 
 	long double alpha_squared = pow(alpha, 2);
-	long double norm_sum = 0.0;
-
-	for( auto l = 0; l <= SUM_INFTY; l++ )
-	{
-		int sign_l = IsEvenNumber(l) ? 1 : -1;
-		norm_sum += pow(alpha_squared, l) * (1 + sign_l * cos(theta)) / factorial(l, pF, q);
-	}
-
-	long double normalization = 1 / norm_sum;
+	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta);
 
 	for( auto n = 0; n <= INTERVAL_N; n++ )
 	{
@@ -56,9 +46,7 @@ void photon_statistics_superposition_n(std::string filename, long double (*pF) (
 
 void photon_statistics_superposition_t(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, int n, long double theta = 0.0)
 {
-	long double domain = 1 / sqrt(abs(1 - q));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -77,15 +65,7 @@ void photon_statistics_superposition_t(std::string filename, long double (*pF) (
 
 	int sign = IsEvenNumber(n) ? 1 : -1;
 	long double alpha_squared = pow(alpha, 2);
-	long double norm_sum = 0.0;
-
-	for( auto l = 0; l <= SUM_INFTY; l++ )
-	{
-		int sign_l = IsEvenNumber(l) ? 1 : -1;
-		norm_sum += pow(alpha_squared, l) * (1 + sign_l * cos(theta)) / factorial(l, pF, q);
-	}
-
-	long double normalization = 1 / norm_sum;
+	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta);
 	long double interval = INTERVAL_T / MAX_POINTS;
 
 	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )

@@ -4,9 +4,7 @@
 
 void second_order_correlation_parameter_superposition_t(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double theta = 0.0)
 {
-	long double domain = 1 / sqrt(abs(1 - q));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -23,36 +21,27 @@ void second_order_correlation_parameter_superposition_t(std::string filename, lo
 	dataFile << "## q = " << q << ", alpha = " << alpha << ", theta = " << theta << '\n';
 
 	long double alpha_squared = pow(alpha, 2);
-	long double norm_sum = 0.0;
-
-	for( auto l = 0; l <= SUM_INFTY; l++ )
-	{
-		int sign_l = IsEvenNumber(l) ? 1 : -1;
-		norm_sum += pow(alpha_squared, l) * (1 + sign_l * cos(theta)) / factorial(l, pF, q);
-	}
-
-	long double normalization = 1 / norm_sum;
+	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta);
 	long double interval = INTERVAL_T / MAX_POINTS;
 
 	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
 	{
 		long double n_sum = 0.0, n_squared_sum = 0.0;
 
-		for( auto k = 0; k <= SUM_INFTY; k++ )
+		for( auto n = 1; n <= SUM_INFTY; n++ )
 		{
-			int sign = IsEvenNumber(k) ? 1 : -1;
-			long double d = pow(1 - exp(-t) + LDBL_EPSILON, k) / factorial(k);
+			int sign = IsEvenNumber(n) ? 1 : -1;
+			long double d = pow(alpha_squared, n) * (1 + sign * cos(theta)) / f_factorial(n, pF, q);
 
-			for( auto n = 0; n <= SUM_INFTY; n++ )
+			n_sum += d * exp(-t) / factorial(n - 1);
+
+			if( n >= 2 )
 			{
-				int sign2 = IsEvenNumber(n) ? 1 : -1;
-				long double e = d * pow(alpha_squared, n + k) * (1 + sign * sign2 * cos(theta)) * exp(-n * t) / (factorial(n) * f_factorial(n + k, pF, q));
-
-				n_sum += e * n;
-				n_squared_sum += e * pow(n + LDBL_EPSILON, 2);
+				n_squared_sum += d * exp(-2 * t) / factorial(n - 2);
 			}
 		}
 
+		n_squared_sum += n_sum;
 		long double sum = (n_squared_sum - n_sum) * pow(n_sum, -2) / normalization;
 
 		dataFile << t << ' ' << sum << '\n';
@@ -75,7 +64,7 @@ void second_order_correlation_parameter_superposition_alpha(std::string filename
 
 	dataFile << "## q = " << q << ", t = " << t << ", theta = " << theta << '\n';
 
-	long double domain = 1 / sqrt(abs(1 - q));
+	long double domain = alpha_domain(pF, q);
 
 	if( domain > INTERVAL_ALPHA )
 	{
@@ -87,32 +76,23 @@ void second_order_correlation_parameter_superposition_alpha(std::string filename
 	for( auto alpha = interval; alpha < domain; alpha += interval )
 	{
 		long double alpha_squared = pow(alpha, 2);
-		long double norm_sum = 0.0;
-
-		for( auto l = 0; l <= SUM_INFTY; l++ )
-		{
-			int sign_l = IsEvenNumber(l) ? 1 : -1;
-			norm_sum += pow(alpha_squared, l) * (1 + sign_l * cos(theta)) / factorial(l, pF, q);
-		}
-
-		long double normalization = 1 / norm_sum;
+		long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta);
 		long double n_sum = 0.0, n_squared_sum = 0.0;
 
-		for( auto k = 0; k <= SUM_INFTY; k++ )
+		for( auto n = 1; n <= SUM_INFTY; n++ )
 		{
-			int sign = IsEvenNumber(k) ? 1 : -1;
-			long double d = pow(1 - exp(-t) + LDBL_EPSILON, k) / factorial(k);
+			int sign = IsEvenNumber(n) ? 1 : -1;
+			long double d = pow(alpha_squared, n) * (1 + sign * cos(theta)) / f_factorial(n, pF, q);
 
-			for( auto n = 0; n <= SUM_INFTY; n++ )
+			n_sum += d * exp(-t) / factorial(n - 1);
+
+			if( n >= 2 )
 			{
-				int sign2 = IsEvenNumber(n) ? 1 : -1;
-				long double e = d * pow(alpha_squared, n + k) * (1 + sign * sign2 * cos(theta)) * exp(-n * t) / (factorial(n) * f_factorial(n + k, pF, q));
-
-				n_sum += e * n;
-				n_squared_sum += e * pow(n + LDBL_EPSILON, 2);
+				n_squared_sum += d * exp(-2 * t) / factorial(n - 2);
 			}
 		}
 
+		n_squared_sum += n_sum;
 		long double sum = (n_squared_sum - n_sum) * pow(n_sum, -2) / normalization;
 
 		dataFile << alpha << ' ' << sum << '\n';

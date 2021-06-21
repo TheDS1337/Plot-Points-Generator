@@ -31,11 +31,6 @@ int main()
 //	plot_i1(1.0 + LDBL_EPSILON, M_PI / 2, M_PI / 2 );
 //	plot_i1(1.5 + LDBL_EPSILON);
 
-//	wigner("wigner_canonical.dat", &f_tsallis, 1.0 - LDBL_EPSILON, 1.0);
-//	wigner("wigner_harmonious.dat", &f_tsallis, 2.0 - LDBL_EPSILON, 0.99);
-//	wigner_superposition("wigner_superposition_canonical.dat", &f_tsallis, 1.0 - LDBL_EPSILON, 1.0, M_PI / 4);
-//	wigner_superposition("wigner_superposition_harmonious.dat", &f_tsallis, 2.0 - LDBL_EPSILON, 0.99, M_PI / 4);
-
 //	plot_photon_statistics_n("photon_statistics_n_2_even.dat", &f_tsallis, 1.5, 1.0, LDBL_EPSILON, 0.0);
 //  plot_quantum_visibility_t("visibility_t_2_0.dat", &f_tsallis, 1.5, 1.0, 0);
 //	fidelity_superposition_t("fidelity_t_2_even2.dat", &f_tsallis, 1.5, 1.0, 0.0);
@@ -43,16 +38,85 @@ int main()
 
 
 
+//	mandel_parameter_superposition2_t("mandel_parameter2_canonical.dat", &f_tsallis, 1.0 + LDBL_EPSILON, 1.0, M_PI);
+//	mandel_parameter_superposition2_t("mandel_parameter2_harmonious.dat", &f_tsallis, 2.0 - LDBL_EPSILON, 0.9, M_PI);
+
+//	second_order_correlation_parameter_superposition2_t("second_order_correlation_parameter2_canonical.dat", &f_tsallis, 1.0 + LDBL_EPSILON, 1.0, M_PI);
+//	second_order_correlation_parameter_superposition2_t("second_order_correlation_parameter2_harmonious.dat", &f_tsallis, 2.0 - LDBL_EPSILON, 0.9, M_PI);
+
+//	squeezing_factors_superposition2_t("squeezing_factors2_canonical.dat", &f_tsallis, 1.0 + LDBL_EPSILON, 1.0, M_PI);
+//	squeezing_factors_superposition2_t("squeezing_factors2_harmonious.dat", &f_tsallis, 2.0 - LDBL_EPSILON, 0.9, M_PI);
 
 
-
-//	plot_mandel_parameter_t("mandel_parameter_t.dat", &f_tsallis, 1.0 + LDBL_EPSILON, 1.0, M_PI);
-//	plot_second_order_correlation_parameter_alpha("second_order_correlation_parameter_alpha.dat", &f_tsallis, 1.0 + LDBL_EPSILON, LDBL_EPSILON, false);
-
-//	plot_mandel_parameter_alpha("mandel_parameter_alpha.dat", &f_tsallis, 1.0 + LDBL_EPSILON, LDBL_EPSILON);
-
-//	plot_squeezing_factors_t("squeezing_factors_t.dat", &f_tsallis, 1.0 + LDBL_EPSILON, LDBL_EPSILON, M_PI / 4);
 //	squeezing_factors_superposition_alpha("squeezing_factors_alpha.dat", &f_tsallis, 2.0 - LDBL_EPSILON, LDBL_EPSILON);
+
+
+	// SECTION 1
+//	wigner("wigner_canonical_100.dat", &f_jackson, 1.0 - LDBL_EPSILON, 1.0);
+//	wigner("wigner_harmonious_90.dat", &f_jackson, LDBL_EPSILON, 0.9);
+
+//	wigner("wigner_jackson_5_25.dat", &f_jackson, 0.05, 0.25);
+//	wigner("wigner_macfarlane_5_25.dat", &f_macfarlane, 0.05, 0.25);
+
+//	wigner("wigner_jackson_30_50.dat", &f_jackson, 0.3, 0.5);
+//	wigner("wigner_macfarlane_30_50.dat", &f_macfarlane, 0.3, 0.5);
+
+//	wigner("wigner_jackson_80_75.dat", &f_jackson, 0.8, 0.75);
+//	wigner("wigner_macfarlane_80_75.dat", &f_macfarlane, 0.8, 0.75);
+
+
+//	wigner_superposition("wigner_canonical_100_even.dat", &f_jackson, 1.0 - LDBL_EPSILON, 1.0, 0.0);
+//	wigner_superposition("wigner_harmonious_90_even.dat", &f_jackson, LDBL_EPSILON, 0.9, 0.0);
+
+//	wigner_superposition("wigner_jackson_5_25_even.dat", &f_jackson, 0.05, 0.25, 0.0);
+//	wigner_superposition("wigner_macfarlane_5_25_even.dat", &f_macfarlane, 0.05, 0.25, 0.0);
+
+//	wigner_superposition("wigner_jackson_30_50_even.dat", &f_jackson, 0.3, 0.5, 0.0);
+//	wigner_superposition("wigner_macfarlane_30_50_even.dat", &f_macfarlane, 0.3, 0.5, 0.0);
+
+//	wigner_superposition("wigner_jackson_80_75_even.dat", &f_jackson, 0.8, 0.75, 0.0);
+//	wigner_superposition("wigner_macfarlane_80_75_even.dat", &f_macfarlane, 0.8, 0.75, 0.0);
+
+
+//	wigner_superposition("wigner_canonical_100_odd.dat", &f_jackson, 1.0 - LDBL_EPSILON, 1.0, M_PI);
+//	wigner_superposition("wigner_harmonious_90_odd.dat", &f_jackson, LDBL_EPSILON, 0.9, M_PI);
+
+//	wigner_superposition("wigner_jackson_5_25_odd.dat", &f_jackson, 0.05, 0.25, M_PI);
+//	wigner_superposition("wigner_macfarlane_5_25_odd.dat", &f_macfarlane, 0.05, 0.25, M_PI);
+
+//	wigner_superposition("wigner_jackson_30_50_odd.dat", &f_jackson, 0.3, 0.5, M_PI);
+//	wigner_superposition("wigner_macfarlane_30_50_odd.dat", &f_macfarlane, 0.3, 0.5, M_PI);
+
+//	wigner_superposition("wigner_jackson_80_75_odd.dat", &f_jackson, 0.8, 0.75, M_PI);
+//	wigner_superposition("wigner_macfarlane_80_75_odd.dat", &f_macfarlane, 0.8, 0.75, M_PI);
+
+
+//	fidelity_superposition("fidelity_jackson_0_even.dat", &f_jackson, LDBL_EPSILON, 0.0);
+//	fidelity_superposition("fidelity_macfarlane_0_even.dat", &f_macfarlane, LDBL_EPSILON, 0.0);
+
+//	fidelity_superposition("fidelity_jackson_25_even.dat", &f_jackson, 0.25, 0.0);
+//	fidelity_superposition("fidelity_macfarlane_25_even.dat", &f_macfarlane, 0.25, 0.0);
+
+//	fidelity_superposition("fidelity_jackson_50_even.dat", &f_jackson, 0.5, 0.0);
+//	fidelity_superposition("fidelity_macfarlane_50_even.dat", &f_macfarlane, 0.5, 0.0);
+
+//	fidelity_superposition("fidelity_jackson_100_even.dat", &f_jackson, 1.0, 0.0);
+//	fidelity_superposition("fidelity_macfarlane_100_even.dat", &f_macfarlane, 1.0, 0.0);
+
+
+//	fidelity_superposition("fidelity_jackson_0_odd.dat", &f_jackson, LDBL_EPSILON, M_PI);
+//	fidelity_superposition("fidelity_macfarlane_0_odd.dat", &f_macfarlane, LDBL_EPSILON, M_PI);
+
+//	fidelity_superposition("fidelity_jackson_25_odd.dat", &f_jackson, 0.25, M_PI);
+//	fidelity_superposition("fidelity_macfarlane_25_odd.dat", &f_macfarlane, 0.25, M_PI);
+
+//	fidelity_superposition("fidelity_jackson_50_odd.dat", &f_jackson, 0.5, M_PI);
+//	fidelity_superposition("fidelity_macfarlane_50_odd.dat", &f_macfarlane, 0.5, M_PI);
+
+//	fidelity_superposition("fidelity_jackson_100_odd.dat", &f_jackson, 1.0, M_PI);
+//	fidelity_superposition("fidelity_macfarlane_100_odd.dat", &f_macfarlane, 1.0, M_PI);
+
+	// SECTION 2
 
 	system("pause");
 	return 0;

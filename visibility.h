@@ -4,9 +4,7 @@
 
 void visibility_superposition_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t)
 {
-	long double domain = 1 / sqrt(abs(1 - q));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;
@@ -49,9 +47,7 @@ void visibility_superposition_n(std::string filename, long double (*pF) (int, lo
 
 void visibility_superposition_t(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, int n)
 {
-	long double domain = 1 / sqrt(abs(1 - q));
-
-	if( alpha >= domain )
+	if( !exponential_convergence_check(pF, q, alpha) )
 	{
 		std::cout << "alpha is out of range." << std::endl;
 		return;

@@ -20,6 +20,11 @@ long double f_jackson(int x, long double q)
 	return sqrt((1 - pow(q, x)) / ((1 - q) * x));
 }
 
+long double f_macfarlane(int x, long double q)
+{
+	return sqrt((pow(q, -x) - pow(q, x)) / ((1 / q - q) * x));
+}
+
 long double f_tsallis(int x, long double q)
 {
 	long double epsl = 5 * LDBL_EPSILON;
@@ -51,6 +56,17 @@ long double deformed_exp(long double x, long double (*pF) (int, long double), lo
 
 		return exp(exponent * value);
 	}
+	else if( pF == &f_macfarlane )
+	{
+		long double value = 0.0;
+
+		for( auto n = 0; n <= SUM_INFTY; n++ )
+		{
+			value += pow(x, n) / factorial(n, pF, q);
+		}
+
+		return value;
+	}
 	else if( pF == &f_tsallis )
 	{
 		long double y = 1 + (1 - q) * x;
@@ -80,5 +96,15 @@ long double normalization_factor_superposition(long double (*pF) (int, long doub
 		sum += pow(alpha_squared, l) * (1 + cos(theta + l * M_PI)) / factorial(l, pF, q);
 	}
 
-	return pow(sum, -2);
+	return 1 / sum;
+}
+
+long double alpha_domain(long double (*pF) (int, long double), long double q)
+{
+	return pF == &f_macfarlane ? 1 / sqrt(q) : 1 / sqrt(abs(1 - q));
+}
+
+bool exponential_convergence_check(long double (*pF) (int, long double), long double q, long double alpha)
+{
+	return alpha < alpha_domain(pF, q) ? true : false;
 }
