@@ -65,7 +65,7 @@ long double deformed_exp(long double x, long double (*pF) (int, long double), lo
 			value += pow(x, n) / factorial(n, pF, q);
 		}
 
-		return value;
+		return pow(value, exponent);
 	}
 	else if( pF == &f_tsallis )
 	{
@@ -93,7 +93,8 @@ long double normalization_factor_superposition(long double (*pF) (int, long doub
 
 	for( auto l = 0; l <= SUM_INFTY; l++ )
 	{
-		sum += pow(alpha_squared, l) * (1 + cos(theta + l * M_PI)) / factorial(l, pF, q);
+		int sign = IsEvenNumber(l) ? 1 : -1;
+		sum += pow(alpha_squared + LDBL_EPSILON, l) * (1 + sign * cos(theta)) / factorial(l, pF, q);
 	}
 
 	return 1 / sum;
@@ -101,7 +102,7 @@ long double normalization_factor_superposition(long double (*pF) (int, long doub
 
 long double alpha_domain(long double (*pF) (int, long double), long double q)
 {
-	return pF == &f_macfarlane ? 1 / sqrt(q) : 1 / sqrt(abs(1 - q));
+	return pF == &f_macfarlane ? 1 / sqrt(1 - pow(q, 2)) : 1 / sqrt(abs(1 - q));
 }
 
 bool exponential_convergence_check(long double (*pF) (int, long double), long double q, long double alpha)

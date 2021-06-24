@@ -2,6 +2,39 @@
 
 #include "utils.h"
 
+void photon_statistics_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha)
+{
+	if( !exponential_convergence_check(pF, q, alpha) )
+	{
+		std::cout << "alpha is out of range." << std::endl;
+		return;
+	}
+
+	std::fstream dataFile;
+	dataFile.open(filename, std::ios::out);
+
+	if( !dataFile )
+	{
+		return;
+	}
+
+	dataFile << "## q = " << q << ", alpha = " << alpha << '\n';
+
+	long double alpha_squared = pow(alpha, 2);
+	long double normalization = normalization_factor(pF, q, alpha_squared);
+
+	for( auto n = 0; n <= INTERVAL_N; n++ )
+	{
+		long double sum = normalization * pow(alpha_squared, n) / factorial(n, pF, q);
+
+		dataFile << n << ' ' << sum << '\n';
+	}
+
+	dataFile.close();
+
+	std::cout << "Photon statistics (n as a variable)... OKAY!" << std::endl;
+}
+
 void photon_statistics_superposition_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t, long double theta = 0.0)
 {
 	if( !exponential_convergence_check(pF, q, alpha) )
@@ -60,7 +93,7 @@ void photon_statistics_superposition_t(std::string filename, long double (*pF) (
 		return;
 	}
 
-	
+
 	dataFile << "## q = " << q << ", alpha = " << alpha << ", n = " << n << ", theta = " << theta << '\n';
 
 	int sign = IsEvenNumber(n) ? 1 : -1;
@@ -81,7 +114,7 @@ void photon_statistics_superposition_t(std::string filename, long double (*pF) (
 		long double sum = normalization * sum2 * exp(-n * t) / factorial(n);
 
 		dataFile << t << ' ' << sum << '\n';
-	}	
+	}
 
 	dataFile.close();
 

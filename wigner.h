@@ -87,7 +87,7 @@ void wigner(std::string filename, long double (*pF) (int, long double), long dou
 
 	dataFile.close();
 
-	std::cout << "Wigner ... OKAY!" << std::endl;
+	std::cout << "Wigner... OKAY!" << std::endl;
 }
 
 void wigner_superposition(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double theta = 0.0)
@@ -188,5 +188,5 @@ void wigner_superposition(std::string filename, long double (*pF) (int, long dou
 
 	dataFile.close();
 
-	std::cout << "Wigner ... OKAY!" << std::endl;
+	std::cout << "Wigner... OKAY!" << std::endl;
 }

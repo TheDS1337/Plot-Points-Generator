@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="deformations.h" />
     <ClInclude Include="fidelity.h" />
+    <ClInclude Include="heisenberg.h" />
     <ClInclude Include="mandel_factor.h" />
     <ClInclude Include="photon_statistics.h" />
     <ClInclude Include="second_order_correlation_parameter.h" />

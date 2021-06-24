@@ -47,5 +47,8 @@
     <ClInclude Include="deformations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="heisenberg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

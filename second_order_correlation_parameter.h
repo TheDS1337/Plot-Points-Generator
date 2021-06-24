@@ -2,14 +2,8 @@
 
 #include "utils.h"
 
-void second_order_correlation_parameter_superposition_t(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double theta = 0.0)
+void second_order_correlation_parameter_alpha(std::string filename, long double (*pF) (int, long double), long double q)
 {
-	if( !exponential_convergence_check(pF, q, alpha) )
-	{
-		std::cout << "alpha is out of range." << std::endl;
-		return;
-	}
-
 	std::fstream dataFile;
 	dataFile.open(filename, std::ios::out);
 
@@ -18,41 +12,48 @@ void second_order_correlation_parameter_superposition_t(std::string filename, lo
 		return;
 	}
 
-	dataFile << "## q = " << q << ", alpha = " << alpha << ", theta = " << theta << '\n';
+	dataFile << "## q = " << q << '\n';
 
-	long double alpha_squared = pow(alpha, 2);
-	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta);
-	long double interval = INTERVAL_T / MAX_POINTS;
+	long double domain = alpha_domain(pF, q);
 
-	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	if( domain > INTERVAL_ALPHA )
 	{
+		domain = INTERVAL_ALPHA;
+	}
+
+	long double interval = domain / MAX_POINTS;
+
+	for( auto alpha = interval; alpha < domain; alpha += interval )
+	{
+		long double alpha_squared = pow(alpha, 2);
+		long double normalization = normalization_factor(pF, q, alpha_squared);
 		long double n_sum = 0.0, n_squared_sum = 0.0;
 
 		for( auto n = 1; n <= SUM_INFTY; n++ )
 		{
-			int sign = IsEvenNumber(n) ? 1 : -1;
-			long double d = pow(alpha_squared, n) * (1 + sign * cos(theta)) / f_factorial(n, pF, q);
+			long double d = pow(alpha_squared, n) / f_factorial(n, pF, q);
 
-			n_sum += d * exp(-t) / factorial(n - 1);
+			n_sum += d / factorial(n - 1);
 
 			if( n >= 2 )
 			{
-				n_squared_sum += d * exp(-2 * t) / factorial(n - 2);
+				n_squared_sum += d / factorial(n - 2);
 			}
 		}
 
 		n_squared_sum += n_sum;
 		long double sum = (n_squared_sum - n_sum) * pow(n_sum, -2) / normalization;
 
-		dataFile << t << ' ' << sum << '\n';
+		dataFile << alpha << ' ' << sum << '\n';
 	}
+
 
 	dataFile.close();
 
-	std::cout << "Second order correlation parameter (t as a variable)... OKAY!" << std::endl;
+	std::cout << "Second order correlation parameter (alpha as a variable)... OKAY!" << std::endl;
 }
 
-void second_order_correlation_parameter_superposition_alpha(std::string filename, long double (*pF) (int, long double), long double q, long double t, long double theta = 0.0)
+void second_order_correlation_parameter_superposition_alpha(std::string filename, long double (*pF) (int, long double), long double q, long double theta = 0.0)
 {
 	std::fstream dataFile;
 	dataFile.open(filename, std::ios::out);
@@ -62,7 +63,7 @@ void second_order_correlation_parameter_superposition_alpha(std::string filename
 		return;
 	}
 
-	dataFile << "## q = " << q << ", t = " << t << ", theta = " << theta << '\n';
+	dataFile << "## q = " << q << ", theta = " << theta << '\n';
 
 	long double domain = alpha_domain(pF, q);
 
@@ -84,11 +85,11 @@ void second_order_correlation_parameter_superposition_alpha(std::string filename
 			int sign = IsEvenNumber(n) ? 1 : -1;
 			long double d = pow(alpha_squared, n) * (1 + sign * cos(theta)) / f_factorial(n, pF, q);
 
-			n_sum += d * exp(-t) / factorial(n - 1);
+			n_sum += d / factorial(n - 1);
 
 			if( n >= 2 )
 			{
-				n_squared_sum += d * exp(-2 * t) / factorial(n - 2);
+				n_squared_sum += d / factorial(n - 2);
 			}
 		}
 
@@ -102,4 +103,61 @@ void second_order_correlation_parameter_superposition_alpha(std::string filename
 	dataFile.close();
 
 	std::cout << "Second order correlation parameter (alpha as a variable)... OKAY!" << std::endl;
+}
+
+void second_order_correlation_parameter_superposition(std::string filename, long double (*pF) (int, long double), long double q)
+{
+	std::fstream dataFile;
+	dataFile.open(filename, std::ios::out);
+
+	if( !dataFile )
+	{
+		return;
+	}
+
+	dataFile << "## q = " << q << '\n';
+
+	long double domainAlpha = alpha_domain(pF, q);
+
+	if( domainAlpha > INTERVAL_ALPHA )
+	{
+		domainAlpha = INTERVAL_ALPHA;
+	}
+
+	long double intervalTheta = INTERVAL_THETA / MAX_POINTS;
+
+	for( auto theta = 0.0; theta < INTERVAL_THETA; theta += intervalTheta )
+	{
+		long double intervalAlpha = domainAlpha / MAX_POINTS;
+
+		for( auto alpha = 10 * intervalAlpha; alpha < domainAlpha; alpha += intervalAlpha )
+		{
+			long double alpha_squared = pow(alpha, 2);
+			long double normalization = normalization_factor_superposition(pF, q, alpha_squared, intervalAlpha);
+			long double n_sum = 0.0, n_squared_sum = 0.0;
+
+			for( auto n = 1; n <= SUM_INFTY; n++ )
+			{
+				int sign = IsEvenNumber(n) ? 1 : -1;
+				long double d = pow(alpha_squared, n) * (1 + sign * cos(theta)) / f_factorial(n, pF, q);
+
+				n_sum += d / factorial(n - 1);
+
+				if( n >= 2 )
+				{
+					n_squared_sum += d / factorial(n - 2);
+				}
+			}
+
+			n_squared_sum += n_sum;
+			long double sum = (n_squared_sum - n_sum) * pow(n_sum, -2) / normalization;
+
+			dataFile << theta << ' ' << alpha << ' ' << sum << '\n';
+		}
+	}
+
+
+	dataFile.close();
+
+	std::cout << "Second order correlation parameter... OKAY!" << std::endl;
 }
