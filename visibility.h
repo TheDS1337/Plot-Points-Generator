@@ -2,7 +2,7 @@
 
 #include "utils.h"
 
-void visibility_superposition_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t)
+void visibility_superposition_n(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t, long double dn = 0.0)
 {
 	if( !exponential_convergence_check(pF, q, alpha) )
 	{
@@ -37,7 +37,7 @@ void visibility_superposition_n(std::string filename, long double (*pF) (int, lo
 
 		long double v = abs(c) / p;
 
-		dataFile << n << ' ' << v << '\n';
+		dataFile << n + dn << ' ' << v << '\n';
 	}
 
 	dataFile.close();
@@ -64,9 +64,9 @@ void visibility_superposition_t(std::string filename, long double (*pF) (int, lo
 	dataFile << "## q = " << q << ", alpha = " << alpha << ", n = " << n << '\n';
 
 	long double alpha_squared = pow(alpha, 2);
-	long double interval = INTERVAL_T / MAX_POINTS;
+	long double interval = INTERVAL_T / 500.0;
 
-	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	for( auto t = LDBL_EPSILON; t <= 10.0; t += interval )
 	{
 		long double p = 0.0, c = 0.0;
 

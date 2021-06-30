@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <complex>
 #include <cmath>
 #include <chrono>
 #include <ctime>

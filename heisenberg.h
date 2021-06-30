@@ -37,7 +37,7 @@ void heisenberg_alpha(std::string filename, long double (*pF) (int, long double)
 		for( auto n = 0; n <= SUM_INFTY; n++ )
 		{
 			long double d = pow(alpha_squared, n) / factorial(n, pF, q);
-			long double e = pow(pF(n + 1, q), 2) + alpha_squared * (1.0 - pow(pF(n + 2, q) / pF(n + 1, q), 2));
+			long double e = pow(pF(n + 1, q), 2) - alpha_squared * (1.0 - pow(pF(n + 2, q) / pF(n + 1, q), 2));
 
 			sum += d * e;
 		}
