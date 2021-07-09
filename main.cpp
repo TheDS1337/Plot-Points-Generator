@@ -128,10 +128,15 @@ int main()
 ////	visibility_superposition_t("visibility_t_canonical_50.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.5, 0);
 ////	visibility_superposition_t("visibility_t_canonical_80.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.8, 0);
 
-////	visibility_superposition_t("visibility_t_harmonious_5.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.05, 0);
-////	visibility_superposition_t("visibility_t_harmonious_50.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.5, 0);
-////	visibility_superposition_t("visibility_t_harmonious_80.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.8, 0);
-////	visibility_superposition_t("visibility_t_harmonious_95.dat", &f_jackson, 1.0 - LDBL_EPSILON, 0.95, 0);
+////	visibility_superposition_t("visibility_t_harmonious_5.dat", &f_jackson, LDBL_EPSILON, 0.05, 0);
+////	visibility_superposition_t("visibility_t_harmonious_50.dat", &f_jackson, LDBL_EPSILON, 0.5, 0);
+////	visibility_superposition_t("visibility_t_harmonious_80.dat", &f_jackson, LDBL_EPSILON, 0.8, 0);
+////	visibility_superposition_t("visibility_t_harmonious_95.dat", &f_jackson, LDBL_EPSILON, 0.95, 0);
+
+////	visibility_superposition_t("visibility_t_harmonious_5_1.dat", &f_jackson, LDBL_EPSILON, 0.05, 1);
+////	visibility_superposition_t("visibility_t_harmonious_50_1.dat", &f_jackson, LDBL_EPSILON, 0.5, 1);
+////	visibility_superposition_t("visibility_t_harmonious_80_1.dat", &f_jackson, LDBL_EPSILON, 0.8, 1);
+////	visibility_superposition_t("visibility_t_harmonious_95_1.dat", &f_jackson, LDBL_EPSILON, 0.95, 1);
 
 //	visibility_superposition_n("visibility_n_harmonious_5_0.dat", &f_jackson, LDBL_EPSILON, 0.05, 0.0);
 //	visibility_superposition_n("visibility_n_harmonious_5_25.dat", &f_jackson, LDBL_EPSILON, 0.05, 0.25);
@@ -552,16 +557,12 @@ int main()
 
 ////	wigner_superposition("wigner_harmonious_25_even.dat", &f_jackson, LDBL_EPSILON, 0.25, 0.0);
 ////	wigner_superposition("wigner_harmonious_25_odd.dat", &f_jackson, LDBL_EPSILON, 0.25, M_PI);
-////	wigner_superposition_batouli("wigner_harmonious_25_even_batouli.dat", &f_jackson, LDBL_EPSILON, 0.25, 0.0);
-////	wigner_superposition_batouli("wigner_harmonious_25_odd_batouli.dat", &f_jackson, LDBL_EPSILON, 0.25, M_PI);
 
 ////	wigner_superposition("wigner_harmonious_50_even.dat", &f_jackson, LDBL_EPSILON, 0.5, 0.0);
 ////	wigner_superposition("wigner_harmonious_50_odd.dat", &f_jackson, LDBL_EPSILON, 0.5, M_PI);
 
 ////	wigner_superposition("wigner_harmonious_75_even.dat", &f_jackson, LDBL_EPSILON, 0.75, 0.0);
 ////	wigner_superposition("wigner_harmonious_75_odd.dat", &f_jackson, LDBL_EPSILON, 0.75, M_PI);
-////	wigner_superposition_batouli("wigner_harmonious_75_even_batouli.dat", &f_jackson, LDBL_EPSILON, 0.75, 0.0);
-////	wigner_superposition_batouli("wigner_harmonious_75_odd_batouli.dat", &f_jackson, LDBL_EPSILON, 0.75, M_PI);
 
 ////	wigner_superposition("wigner_jackson_25_100_even.dat", &f_jackson, 0.25, 1.0, 0.0);
 ////	wigner_superposition("wigner_jackson_25_100_odd.dat", &f_jackson, 0.25, 1.0, M_PI);
@@ -571,8 +572,17 @@ int main()
 
 ////	wigner_superposition("wigner_jackson_90_300_even.dat", &f_jackson, 0.9, 3.0, 0.0);
 ////	wigner_superposition("wigner_jackson_90_300_odd.dat", &f_jackson, 0.9, 3.0, M_PI);
-////	wigner_superposition_batouli("wigner_jackson_90_300_even_batouli.dat", &f_jackson, 0.9, 3.0, 0.0);
-////	wigner_superposition_batouli("wigner_jackson_90_300_odd_batouli.dat", &f_jackson, 0.9, 3.0, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_0.dat", &f_jackson, 0.9, 3.0, 0.0, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_10.dat", &f_jackson, 0.9, 3.0, 0.1, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_20.dat", &f_jackson, 0.9, 3.0, 0.2, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_30.dat", &f_jackson, 0.9, 3.0, 0.3, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_40.dat", &f_jackson, 0.9, 3.0, 0.4, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_50.dat", &f_jackson, 0.9, 3.0, 0.5, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_60.dat", &f_jackson, 0.9, 3.0, 0.6, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_70.dat", &f_jackson, 0.9, 3.0, 0.7, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_80.dat", &f_jackson, 0.9, 3.0, 0.8, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_90.dat", &f_jackson, 0.9, 3.0, 0.9, M_PI);
+	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_100.dat", &f_jackson, 0.9, 3.0, 1.0, M_PI);
 
 ////	wigner_superposition("wigner_macfarlane_25_100_even.dat", &f_macfarlane, 0.25, 1.0, 0.0);
 ////	wigner_superposition("wigner_macfarlane_25_100_odd.dat", &f_macfarlane, 0.25, 1.0, M_PI);

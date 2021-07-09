@@ -22,18 +22,18 @@ void wigner(std::string filename, long double (*pF) (int, long double), long dou
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = 2 * normalization_factor(pF, q, alpha_squared) / M_PI;
-	long double domainXY = 3.0;
+	long double domainXY = 8.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
 	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-0.1 * pow(x + LDBL_EPSILON, 2)));
 		
 		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-0.1 * pow(y + LDBL_EPSILON, 2)));
 
 			long double beta_squared = pow(x + LDBL_EPSILON, 2) + pow(y + LDBL_EPSILON, 2);
 			long double beta = sqrt(beta_squared), phi = atan2(y, x);
@@ -110,18 +110,18 @@ void wigner_superposition(std::string filename, long double (*pF) (int, long dou
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta) / M_PI;
-	long double domainXY = 4.0;
+	long double domainXY = 8.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
 	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-0.1 * pow(x + LDBL_EPSILON, 2)));
 
 		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-0.1 * pow(y + LDBL_EPSILON, 2)));
 
 			long double beta_squared = pow(x + LDBL_EPSILON, 2) + pow(y + LDBL_EPSILON, 2);
 			long double beta = sqrt(beta_squared), phi = atan2(y, x);
@@ -191,7 +191,7 @@ void wigner_superposition(std::string filename, long double (*pF) (int, long dou
 	std::cout << "Wigner... OKAY!" << std::endl;
 }
 
-void wigner_superposition_batouli(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double theta = 0.0)
+void wigner_superposition_batouli(std::string filename, long double (*pF) (int, long double), long double q, long double alpha, long double t, long double theta = 0.0)
 {
 	using namespace std::complex_literals;
 	std::complex<long double> imaginary = 1i;
@@ -210,44 +210,50 @@ void wigner_superposition_batouli(std::string filename, long double (*pF) (int, 
 		return;
 	}
 
-	dataFile << "## q = " << q << ", alpha = " << alpha << ", theta = " << theta << '\n';
+//	dataFile << "## q = " << q << ", alpha = " << alpha << ", theta = " << theta << '\n';
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta) / M_PI;
-	long double domainXY = 4.0;
+	long double domainXY = 8.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
 	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-0.1 * pow(x + LDBL_EPSILON, 2)));
 
 		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-0.1 * pow(y + LDBL_EPSILON, 2)));
 
 			std::complex<long double> beta = x + imaginary * y;
 			long double beta_squared = norm(beta);
 
 			std::complex<long double> sum = 0.0;
 
-			for( auto n = 0; n <= 20; n++ )
+			for( auto n = 0; n <= 10; n++ )
 			{
 				int sign = IsEvenNumber(n) ? 1 : -1;
-				std::complex<long double> c_n = pow(alpha, n) * (std::complex<long double>(1.0) + exp(imaginary * std::complex<long double>(theta + n * M_PI))) / sqrt(factorial(n, pF, q));
 
-				for( auto m = 0; m <= 20; m++ )
+				for( auto m = 0; m <= 10; m++ )
 				{
-					std::complex<long double> c_m = pow(alpha, m) * (std::complex<long double>(1.0) + exp(-imaginary * std::complex<long double>(theta + m * M_PI))) / sqrt(factorial(m, pF, q));
+					std::complex<long double> rho_nm = 0.0;
+
+					for( auto k = 0; k <= 10; k++ )
+					{
+						rho_nm += pow(alpha_squared, k) * (std::complex<long double>(1.0) + exp(imaginary * std::complex<long double>(theta + (n + k) * M_PI))) * (std::complex<long double>(1.0) + exp(-imaginary * std::complex<long double>(theta + (m + k) * M_PI))) * pow(1 - exp(-t) + LDBL_EPSILON, k) / (factorial(k) * f_factorial(n + k, pF, q, false) * f_factorial(m + k, pF, q, false));
+					}
+
+					rho_nm *= pow(alpha, n + m) * exp(-0.5 * (n + m) * t) / sqrt(factorial(n) * factorial(m));
 
 					if( m <= n )
 					{
-						sum += std::complex<long double>(sign) * c_n * c_m * sqrt(factorial(m) / factorial(n)) * exp(-2 * beta_squared) * pow(-std::complex<long double>(2) * conj(beta), n - m) * laguerre(m, n - m, 4 * beta_squared);
+						sum += std::complex<long double>(sign) * rho_nm * sqrt(factorial(m) / factorial(n)) * exp(-2 * beta_squared) * pow(-std::complex<long double>(2) * conj(beta), n - m) * laguerre(m, n - m, 4 * beta_squared);
 					}
 					else
 					{
-						sum += std::complex<long double>(sign) * c_n * c_m * sqrt(factorial(n) / factorial(m)) * exp(-2 * beta_squared) * pow(std::complex<long double>(2) * beta, m - n) * laguerre(n, m - n, 4 * beta_squared);
+						sum += std::complex<long double>(sign) * rho_nm* sqrt(factorial(n) / factorial(m)) * exp(-2 * beta_squared) * pow(std::complex<long double>(2) * beta, m - n) * laguerre(n, m - n, 4 * beta_squared);
 					}
 				}
 			}
