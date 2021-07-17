@@ -572,17 +572,7 @@ int main()
 
 ////	wigner_superposition("wigner_jackson_90_300_even.dat", &f_jackson, 0.9, 3.0, 0.0);
 ////	wigner_superposition("wigner_jackson_90_300_odd.dat", &f_jackson, 0.9, 3.0, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_0.dat", &f_jackson, 0.9, 3.0, 0.0, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_10.dat", &f_jackson, 0.9, 3.0, 0.1, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_20.dat", &f_jackson, 0.9, 3.0, 0.2, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_30.dat", &f_jackson, 0.9, 3.0, 0.3, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_40.dat", &f_jackson, 0.9, 3.0, 0.4, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_50.dat", &f_jackson, 0.9, 3.0, 0.5, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_60.dat", &f_jackson, 0.9, 3.0, 0.6, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_70.dat", &f_jackson, 0.9, 3.0, 0.7, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_80.dat", &f_jackson, 0.9, 3.0, 0.8, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_90.dat", &f_jackson, 0.9, 3.0, 0.9, M_PI);
-	wigner_superposition_batouli("wigner_jackson_90_300_odd_t_100.dat", &f_jackson, 0.9, 3.0, 1.0, M_PI);
+
 
 ////	wigner_superposition("wigner_macfarlane_25_100_even.dat", &f_macfarlane, 0.25, 1.0, 0.0);
 ////	wigner_superposition("wigner_macfarlane_25_100_odd.dat", &f_macfarlane, 0.25, 1.0, M_PI);
@@ -597,7 +587,125 @@ int main()
 
 	// SECTION 2
 
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_0_even.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_0_odd.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.0, M_PI, 0.15);
 
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_10_even.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.1, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_10_odd.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.1, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_50_even.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.5, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_50_odd.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 0.5, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_100_even.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 1.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_canonical_300_100_odd.dat", &f_jackson, 1.0 - LDBL_EPSILON, 3.0, 1.0, M_PI, 0.15);
+
+
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_0_even.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_0_odd.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.0, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_10_even.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.1, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_10_odd.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.1, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_50_even.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.5, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_50_odd.dat", &f_jackson, LDBL_EPSILON, 0.95, 0.5, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_100_even.dat", &f_jackson, LDBL_EPSILON, 0.95, 1.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_harmonious_95_100_odd.dat", &f_jackson, LDBL_EPSILON, 0.95, 1.0, M_PI, 0.15);
+
+
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_0_even.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_0_odd.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.0, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_10_even.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.1, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_10_odd.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.1, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_50_even.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.5, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_50_odd.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 0.5, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_100_even.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 1.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_jackson_75_200_100_odd.dat", &f_jackson, 0.75, 2.0 - LDBL_EPSILON, 1.0, M_PI, 0.15);
+
+
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_0_even.dat", &f_macfarlane, 0.75, 1.5, 0.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_0_odd.dat", &f_macfarlane, 0.75, 1.5, 0.0, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_10_even.dat", &f_macfarlane, 0.75, 1.5, 0.1, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_10_odd.dat", &f_macfarlane, 0.75, 1.5, 0.1, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_50_even.dat", &f_macfarlane, 0.75, 1.5, 0.5, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_50_odd.dat", &f_macfarlane, 0.75, 1.5, 0.5, M_PI, 0.15);
+
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_100_even.dat", &f_macfarlane, 0.75, 1.5, 1.0, 0.0, -0.15);
+////	photon_statistics_superposition_n("photon_statistics_n_macfarlane_75_150_100_odd.dat", &f_macfarlane, 0.75, 1.5, 1.0, M_PI, 0.15);
+
+	long double interval = INTERVAL_T / 10.0;
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_canonical_100_%i_even.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, 1.0 - LDBL_EPSILON, 1.0, t, 0.0);
+	}
+*/
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_canonical_100_%i_odd.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, 1.0 - LDBL_EPSILON, 1.0, t, M_PI);
+	}
+*/
+
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_harmonious_50_%i_even.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, LDBL_EPSILON, 0.5, t, 0.0);
+	}
+*/
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_harmonious_50_%i_odd.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, LDBL_EPSILON, 0.5, t, M_PI);
+	}
+*/
+
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_jackson_75_200_%i_even.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, 0.75, 2.0 - LDBL_EPSILON, t, 0.0);
+	}
+*/
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_jackson_75_200_%i_odd.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_jackson, 0.75, 2.0 - LDBL_EPSILON, t, M_PI);
+	}
+*/
+
+/*
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_macfarlane_75_150_%i_even.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_macfarlane, 0.75, 1.5, t, 0.0);
+	}
+*/
+/*	
+	for( auto t = LDBL_EPSILON; t <= INTERVAL_T; t += interval )
+	{
+		char filename[128];
+		sprintf_s(filename, sizeof(filename), "wigner_macfarlane_75_150_%i_odd.dat", (int) (t * 100));
+		wigner_superposition_batouli(filename, &f_macfarlane, 0.75, 1.5, t, M_PI);
+	}
+*/
 	system("pause");
 	return 0;
 }

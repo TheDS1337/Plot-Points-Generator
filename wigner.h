@@ -214,18 +214,18 @@ void wigner_superposition_batouli(std::string filename, long double (*pF) (int, 
 
 	long double alpha_squared = pow(alpha, 2);
 	long double normalization = normalization_factor_superposition(pF, q, alpha_squared, theta) / M_PI;
-	long double domainXY = 8.0;
+	long double domainXY = 4.0;
 	long double interval = domainXY / 10;
 	long double intervalX = interval;
 	long double intervalY = interval;
 
 	for( long double x = -domainXY; x < domainXY; x += intervalX )
 	{
-		intervalX = interval / (1.0 + 9.0 * exp(-0.1 * pow(x + LDBL_EPSILON, 2)));
+		intervalX = interval / (1.0 + 9.0 * exp(-pow(x + LDBL_EPSILON, 2)));
 
 		for( long double y = -domainXY; y < domainXY; y += intervalY )
 		{
-			intervalY = interval / (1.0 + 9.0 * exp(-0.1 * pow(y + LDBL_EPSILON, 2)));
+			intervalY = interval / (1.0 + 9.0 * exp(-pow(y + LDBL_EPSILON, 2)));
 
 			std::complex<long double> beta = x + imaginary * y;
 			long double beta_squared = norm(beta);

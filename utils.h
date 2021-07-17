@@ -16,7 +16,7 @@
 #define INTERVAL_Q				1.0
 #define INTERVAL_ALPHA			1.5
 #define INTERVAL_T				1.0
-#define INTERVAL_N				10
+#define INTERVAL_N				15
 #define INTERVAL_THETA			M_PI
 
 constexpr long double factorial(int n, long double (*pF) (int, long double) = nullptr, long double q = 1.0)
